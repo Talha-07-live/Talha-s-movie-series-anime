@@ -3,49 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fullscreen Video with Poster</title>
+    <title>Embed with Poster</title>
     <style>
-        body, html {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            width: 100%;
-            overflow: hidden;
-        }
-        .video-container {
+        .iframe-container {
             position: relative;
             width: 100%;
-            height: 100%;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            height: 0;
+            overflow: hidden;
         }
-        .poster {
+        .iframe-container iframe, .iframe-container img {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: url('https://s10.gifyu.com/images/SYGkR.jpg') no-repeat center center;
-            background-size: cover;
-            cursor: pointer;
         }
-        .iframe-container {
-            display: none;
-            width: 100%;
-            height: 100%;
-            border: none;
+        .iframe-container img {
+            z-index: 1;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
-    <div class="video-container">
-        <div class="poster" onclick="playVideo()"></div>
-        <iframe class="iframe-container" id="videoIframe" src="https://anym3u8player.com/tv/p.php?url=https%3A%2F%2Fapi005.backblazeb2.com%2Ffile%2Fssbucket%2F265e279c-50fe-11ef-b67c-e1ab35f4b07b.mkv" allowfullscreen></iframe>
-    </div>
 
-    <script>
-        function playVideo() {
-            document.querySelector('.poster').style.display = 'none';
-            document.getElementById('videoIframe').style.display = 'block';
-        }
-    </script>
+<div class="iframe-container">
+    <img src="https://s10.gifyu.com/images/SYGkR.jpg" alt="Poster Image" id="poster">
+    <iframe src="https://anym3u8player.com/tv/p.php?url=https%3A%2F%2Fapi005.backblazeb2.com%2Ffile%2Fssbucket%2F265e279c-50fe-11ef-b67c-e1ab35f4b07b.mkv" frameborder="0" allowfullscreen></iframe>
+</div>
+
+<script>
+    document.getElementById('poster').addEventListener('click', function () {
+        this.style.display = 'none';
+    });
+</script>
+
 </body>
 </html>
