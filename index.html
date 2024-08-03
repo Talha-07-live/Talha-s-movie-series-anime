@@ -3,59 +3,93 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Video Player</title>
+    <title>Advanced Video Player</title>
     <style>
         body {
             font-family: Arial, sans-serif;
+            background-color: #333;
+            color: #fff;
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
-            background-color: #f0f0f0;
         }
-        video {
+
+        .video-container {
+            position: relative;
             width: 80%;
             max-width: 800px;
-            margin-bottom: 20px;
         }
-        a {
-            text-decoration: none;
-            color: white;
-            background-color: #007bff;
-            padding: 10px 20px;
-            border-radius: 5px;
+
+        #videoPlayer {
+            width: 100%;
+            background: #000;
         }
-        a:hover {
-            background-color: #0056b3;
+
+        .loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.5em;
+            display: none;
         }
     </style>
 </head>
 <body>
-
-    <video controls poster="https://s10.gifyu.com/images/SYGkR.jpg">
-        <source src="your_video.mp4" type="video/mp4">
-        <source src="https://api005.backblazeb2.com/file/ssbucket/265e279c-50fe-11ef-b67c-e1ab35f4b07b.mkv" type="video/x-matroska">
-        Your browser does not support the video tag.
-    </video>
-
-    <a href="your_video.mp4" download>Download MP4</a>
-    <a href="your_video.mkv" download style="margin-top: 10px;">Download MKV</a>
-
+    <div class="video-container">
+        <video id="videoPlayer" controls poster="https://s10.gifyu.com/images/SYGkR.jpg">
+            <source id="mp4Source" src="mp4" type="video/mp4">
+            <source id="mkvSource" src="https://api005.backblazeb2.com/file/ssbucket/265e279c-50fe-11ef-b67c-e1ab35f4b07b.mkv" type="video/x-matroska">
+            Your browser does not support the video tag.
+        </video>
+        <div id="loading" class="loading">Buffering...</div>
+    </div>
     <script>
-        const video = document.querySelector('video');
-        const mp4Source = video.querySelector('source[type="video/mp4"]');
-        const mkvSource = video.querySelector('source[type="video/x-matroska"]');
+        document.addEventListener('DOMContentLoaded', () => {
+            const videoPlayer = document.getElementById('videoPlayer');
+            const loadingIndicator = document.getElementById('loading');
 
-        const mp4Url = 'https://your-mp4-url.mp4';
-        const mkvUrl = 'https://api005.backblazeb2.com/file/ssbucket/265e279c-50fe-11ef-b67c-e1ab35f4b07b.mkv';
+            const handleBuffering = () => {
+                const bufferEnd = videoPlayer.buffered.end(videoPlayer.buffered.length - 1);
+                const bufferStart = videoPlayer.buffered.start(0);
 
-        mp4Source.src = mp4Url;
-        mkvSource.src = mkvUrl;
+                if (videoPlayer.currentTime > bufferEnd - 5 || videoPlayer.currentTime < bufferStart + 5) {
+                    loadingIndicator.style.display = 'block';
+                } else {
+                    loadingIndicator.style.display = 'none';
+                }
+            };
 
-        video.load();
+            videoPlayer.addEventListener('waiting', () => {
+                loadingIndicator.style.display = 'block';
+            });
+
+            videoPlayer.addEventListener('canplay', () => {
+                loadingIndicator.style.display = 'none';
+            });
+
+            videoPlayer.addEventListener('timeupdate', handleBuffering);
+
+            // Error handling
+            videoPlayer.addEventListener('error', (e) => {
+                console.error('Error occurred: ', e);
+                loadingIndicator.textContent = 'An error occurred while loading the video.';
+                loadingIndicator.style.display = 'block';
+            });
+
+            // Advanced buffering logic
+            const checkBuffer = setInterval(() => {
+                if (videoPlayer.buffered.length) {
+                    handleBuffering();
+                }
+            }, 500);
+
+            videoPlayer.addEventListener('ended', () => {
+                clearInterval(checkBuffer);
+            });
+        });
     </script>
-
 </body>
 </html>
