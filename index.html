@@ -42,6 +42,21 @@
             display: none; /* Initially hide iframe */
             cursor: pointer; /* Add cursor pointer to indicate it's clickable */
         }
+        #iframe-poster {
+            position: absolute;
+            top: -200px;
+            left: -14px;
+            width: 105%;
+            max-width: 1000px;
+            border: 5px solid transparent;
+            border-radius: 10px;
+            animation: border-animation 5s infinite;
+            background-clip: border-box;
+            background-image: url('https://s10.gifyu.com/images/SYGkR.jpg');
+            background-size: cover;
+            display: none; /* Initially hide poster */
+            cursor: pointer; /* Add cursor pointer to indicate it's clickable */
+        }
         #password {
             padding: 10px;
             font-size: 16px;
@@ -207,7 +222,8 @@
     <div class="video-container">
         <img src="https://s10.gifyu.com/images/SrMU9.png" alt="Logo" class="logo">
         <video id="my-video" controls width="640" height="264" src="https://dzkyvlfyge.erbvr.com/PeaceTvBangla/tracks-v3a1/mono.m3u8"></video>
-        <iframe id="my-iframe" src="https://anym3u8player.com/tv/p.php?url=https%3A%2F%2Fapi005.backblazeb2.com%2Ffile%2Fssbucket%2F265e279c-50fe-11ef-b67c-e1ab35f4b07b.mkv" width="100%" height="225px" frameborder="0" allowfullscreen style="display: none;"></iframe>
+        <div id="iframe-poster"></div>
+        <iframe id="my-iframe" src="https://anym3u8player.com/tv/p.php?url=https%3A%2F%2Fapi005.backblazeb2.com%2Ffile%2Fssbucket%2F265e279c-50fe-11ef-b67c-e1ab35f4b07b.mkv" width="100%" height="225px" frameborder="0" allowfullscreen></iframe>
         <img src="https://s12.gifyu.com/images/SrMx2.png" alt="Logo Top Right" class="logo-top-right" id="logo-top-right">
         <!-- Removed the quality-controls section -->
         <button class="support-button" onclick="openSupport()">Support</button>
@@ -229,6 +245,7 @@
         const submitBtn = document.getElementById('submit-btn');
         const videoPlayer = document.getElementById('my-video');
         const iframePlayer = document.getElementById('my-iframe');
+        const iframePoster = document.getElementById('iframe-poster');
         const tickerContainer = document.querySelector('.ticker-container'); // Select the ticker container
         const logoTopRight = document.getElementById('logo-top-right');
         
@@ -237,8 +254,10 @@
                 loginForm.style.display = 'none';
                 videoPlayer.style.display = 'none';
                 iframePlayer.style.display = 'block';
-                iframePlayer.onclick = () => {
-                };
+                iframePoster.style.display = 'block';
+                iframePoster.addEventListener('click', () => {
+                    iframePoster.style.display = 'none'; // Hide poster on click
+                });
                 tickerContainer.style.display = 'block'; // Show ticker after successful login
                 logoTopRight.style.display = 'block'; // Show the top-right logo after successful login
                 
