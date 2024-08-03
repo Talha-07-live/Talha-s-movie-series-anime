@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Player</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        video {
+            width: 80%;
+            max-width: 800px;
+            margin-bottom: 20px;
+        }
+        a {
+            text-decoration: none;
+            color: white;
+            background-color: #007bff;
+            padding: 10px 20px;
+            border-radius: 5px;
+        }
+        a:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+    <video controls poster="https://s10.gifyu.com/images/SYGkR.jpg">
+        <source src="your_video.mp4" type="video/mp4">
+        <source src="https://api005.backblazeb2.com/file/ssbucket/265e279c-50fe-11ef-b67c-e1ab35f4b07b.mkv" type="video/x-matroska">
+        Your browser does not support the video tag.
+    </video>
+
+    <a href="your_video.mp4" download>Download MP4</a>
+    <a href="your_video.mkv" download style="margin-top: 10px;">Download MKV</a>
+
+    <script>
+        const video = document.querySelector('video');
+        const mp4Source = video.querySelector('source[type="video/mp4"]');
+        const mkvSource = video.querySelector('source[type="video/x-matroska"]');
+
+        const mp4Url = 'https://your-mp4-url.mp4';
+        const mkvUrl = 'https://api005.backblazeb2.com/file/ssbucket/265e279c-50fe-11ef-b67c-e1ab35f4b07b.mkv';
+
+        mp4Source.src = mp4Url;
+        mkvSource.src = mkvUrl;
+
+        video.load();
+    </script>
+
+</body>
+</html>
